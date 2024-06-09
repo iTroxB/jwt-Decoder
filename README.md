@@ -22,14 +22,16 @@ sudo ln -s /path/to/repository/jwt-Decoder/jwtDecoder.sh /usr/bin/jwtDecoder
 * To know the options and parameters of the tool run the help menu with the flag `-h` or `--help`.
 
 ```shell
-bugHunterx -h
+jwtDecoder -h
 ```
 
 ```shell
-bugHunterx --help
+jwtDecoder --help
 ```
 
 ![jwt2](./img/jwt-help.png)
+
+* Execute tool
 
 ![jwt3](./img/jwt-token.png)
 
