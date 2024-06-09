@@ -1,8 +1,6 @@
 #!/bin/bash
 # Author: iTrox
 
-
-
 ######################################################
 #################### COLOURS EDIT ####################
 ######################################################
@@ -14,8 +12,6 @@ yellow="\e[0;33m\033[1m"
 purple="\e[0;35m\033[1m"
 turquoise="\e[0;36m\033[1m"
 gray="\e[0;37m\033[1m"
-
-
 
 ###################################################
 #################### FUNCTIONS ####################
@@ -50,12 +46,64 @@ help_menu() {
     echo -e " 	${turquoise}-h${end}, ${gray}Show help menu${end}\n"
 }
 
-# REDIRECT: HELP MENU
-if [[ "$1" = "-h" || "$1" = "--help" ]]; then
-	help_menu
-    exit 0
-fi
+# URL-safe base64 decode
+url_safe_base64_decode() {
+    local input=$1
+    local padding=$(( (4 - ${#input} % 4) % 4 ))
+    input="${input}$(printf '=%.0s' $(seq 1 $padding))"
+    echo "$input" | base64 --decode 2>/dev/null
+}
 
+# Main function
+main() {
+    # REDIRECT: HELP MENU
+    if [[ "$1" = "-h" || "$1" = "--help" ]]; then
+        help_menu
+        exit 0
+    fi
+
+    while getopts ":t:h" opt; do
+        case ${opt} in
+            t )
+                token=$OPTARG
+            ;;
+            h )
+                help_menu
+                exit 0
+            ;;
+            \? )
+                echo -e "\n ${gray}Invalid option:${end} -$OPTARG\n" 1>&2
+                exit 1
+            ;;
+            : )
+                echo -e "\n ${gray}Option requires an argument:${end} -$OPTARG\n" 1>&2
+                exit 1
+                ;;
+        esac
+    done
+    shift $((OPTIND -1))
+
+    if [ -z "$token" ]; then
+        echo -e "\n ${red}[!] Error:${end} ${gray}JWT token is required${end}\n" 1>&2
+        exit 1
+    fi
+
+    IFS='.' read -r header payload signature <<< "$token"
+
+    header_decoded=$(url_safe_base64_decode "$header")
+    payload_decoded=$(url_safe_base64_decode "$payload")
+
+    echo -e "\n${gray}--------------------------------------------------${end}"
+    echo -e "${red}Header:${end}"
+    echo -e "$header_decoded" | jq .
+    echo -e "${gray}--------------------------------------------------${end}"
+    echo -e "${blue}Payload:${end}"
+    echo -e "$payload_decoded" | jq .
+    echo -e "${gray}--------------------------------------------------${end}"
+    echo -e "${yellow}Signature:${end}"
+    echo -e "$signature"
+    echo -e "${gray}--------------------------------------------------${end}\n"
+}
 
 
 ####################################################
@@ -63,53 +111,4 @@ fi
 ####################################################
 clear
 print_banner
-
-while getopts ":t:h" opt; do
-    case ${opt} in
-        t )
-            token=$OPTARG
-        ;;
-        h )
-            help_menu
-            exit 0
-        ;;
-        \? )
-            echo -e "\n ${gray}Invalid option:${end} -$OPTARG\n" 1>&2
-            exit 1
-        ;;
-        : )
-            echo -e "\n ${gray}Option requires an argument:${end} -$OPTARG\n" 1>&2
-            exit 1
-            ;;
-    esac
-done
-shift $((OPTIND -1))
-
-if [ -z "$token" ]; then
-    echo -e "\n ${red}[!] Error:${end} ${gray}JWT token is required${end}\n" 1>&2
-    exit 1
-fi
-
-IFS='.' read -r header payload signature <<< "$token"
-
-url_safe_base64_decode() {
-    local input=$1
-
-    local padding=$(( (4 - ${#input} % 4) % 4 ))
-    input="${input}$(printf '=%.0s' $(seq 1 $padding))"
-    echo "$input" | base64 --decode 2>/dev/null
-}
-
-header_decoded=$(url_safe_base64_decode "$header")
-payload_decoded=$(url_safe_base64_decode "$payload")
-
-echo -e "\n${gray}--------------------------------------------------${end}"
-echo -e "${red}Header:${end}"
-echo -e "$header_decoded" | jq .
-echo -e "${gray}--------------------------------------------------${end}"
-echo -e "${blue}Payload:${end}"
-echo -e "$payload_decoded" | jq .
-echo -e "${gray}--------------------------------------------------${end}"
-echo -e "${yellow}Signature:${end}"
-echo -e "$signature"
-echo -e "${gray}--------------------------------------------------${end}\n"
+main "$@"
