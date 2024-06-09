@@ -23,8 +23,8 @@ sudo bash /opt/jwt-Decoder/requirements.sh
 * To use the system-level tool as an executable from a relative path, it is recommended to create a symbolic link to the /usr/bin directory from your repository directory.
 
 ```shell
-sudo chmod +x /opt/jwt_decoder/jwtDecoder.sh
-sudo ln -s /opt/jwt_decoder/jwtDecoder.sh /usr/bin/jwtDecoder
+sudo chmod +x /opt/jwt-Decoder/jwtDecoder.sh
+sudo ln -s /opt/jwt-Decoder/jwtDecoder.sh /usr/bin/jwtDecoder
 ```
 
 * To know the options and parameters of the tool run the help menu with the flag `-h` or `--help`.
