@@ -6,18 +6,26 @@ Bash script to decode JSON Web Tokens
 
 ---
 
-## Symbolic Link
+## Use
+
+* Download the repository to your system
+
+```shell
+sudo git -C /opt clone https://github.com/iTroxB/jwt-Decoder.git
+```
+
+* Install the requirements by running **requirements.sh**
+
+```shell
+sudo bash /opt/jwt-Decoder/requirements.sh
+```
 
 * To use the system-level tool as an executable from a relative path, it is recommended to create a symbolic link to the /usr/bin directory from your repository directory.
 
 ```shell
-chmod +x jwtDecoder.sh
-sudo ln -s /path/to/repository/jwt-Decoder/jwtDecoder.sh /usr/bin/jwtDecoder
+sudo chmod +x /opt/jwt_decoder/jwtDecoder.sh
+sudo ln -s /opt/jwt_decoder/jwtDecoder.sh /usr/bin/jwtDecoder
 ```
-
----
-
-## Use
 
 * To know the options and parameters of the tool run the help menu with the flag `-h` or `--help`.
 
