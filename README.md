@@ -1,4 +1,4 @@
-![image](https://github.com/iTroxB/jwt-Decoder/assets/143133090/b629a318-e987-4626-ad51-7d197ab6c969)# jwt-Decoder
+# jwt-Decoder
 
 ![jwt1](./img/jwt-logo.png)
 
