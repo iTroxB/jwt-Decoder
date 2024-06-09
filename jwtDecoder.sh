@@ -46,6 +46,12 @@ help_menu() {
     echo -e " 	${turquoise}-h${end}, ${gray}Show help menu${end}\n"
 }
 
+# REDIRECT: HELP MENU
+    if [[ "$1" = "-h" || "$1" = "--help" ]]; then
+        help_menu
+        exit 0
+    fi
+
 # URL-safe base64 decode
 url_safe_base64_decode() {
     local input=$1
@@ -56,12 +62,6 @@ url_safe_base64_decode() {
 
 # Main function
 main() {
-    # REDIRECT: HELP MENU
-    if [[ "$1" = "-h" || "$1" = "--help" ]]; then
-        help_menu
-        exit 0
-    fi
-
     while getopts ":t:h" opt; do
         case ${opt} in
             t )
@@ -97,7 +97,7 @@ main() {
     echo -e "${red}Header:${end}"
     echo -e "$header_decoded" | jq .
     echo -e "${gray}--------------------------------------------------${end}"
-    echo -e "${blue}Payload:${end}"
+    echo -e "${purple}Payload:${end}"
     echo -e "$payload_decoded" | jq .
     echo -e "${gray}--------------------------------------------------${end}"
     echo -e "${yellow}Signature:${end}"
@@ -109,6 +109,5 @@ main() {
 ####################################################
 #################### RUN SCRIPT ####################
 ####################################################
-clear
 print_banner
 main "$@"
