@@ -1,6 +1,6 @@
 # jwt-Decoder
 
-![jwt1](./img/jwt-logo.png)
+![jwt1](./img/jwt-logo2.png)
 
 Bash script to decode JSON Web Tokens
 
