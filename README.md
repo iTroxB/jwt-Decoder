@@ -45,7 +45,7 @@ jwtDecoder --help
 
 - Example with regular JWT token
 
-![jwt3](./img/jwt-token.png)
+![jwt3](./img/jwt-token1.png)
 
 - Example with the same JWT token as above but Base64-encrypted
 
