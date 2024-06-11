@@ -39,8 +39,15 @@ jwtDecoder --help
 
 ![jwt2](./img/jwt-help.png)
 
+---
+
 ## Use tool
+
+- Example with regular JWT token
 
 ![jwt3](./img/jwt-token.png)
 
+- Example with the same JWT token as above but Base64-encrypted
+
+![jwt4](./img/jwt-token2.png)
 ---
