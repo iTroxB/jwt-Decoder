@@ -33,7 +33,7 @@ print_banner() {
 	echo -e " ${yellow} / /_/ / | |/ |/ / / /    / /_/ /  __/ /__/ /_/ / /_/ /  __/ / ${end}"
 	echo -e " ${yellow} \____/  |__/|__/ /_/    /_____/\\___/\\___/\\____/\\__,_/\\___/_/ ${end}\n\n"
 	echo -e "  ${turquoise}JSON Web Token decoder ${end}"
-	echo -e "  ${turquoise}Version 1.0${end}"
+	echo -e "  ${turquoise}Version 2.0${end}"
     echo -e "  ${blue}Made by iTrox${end}\n"
 	echo -e "  ${turquoise}jwtDecoder [-h] or [--help] to view help menu${end}\n"
 }
@@ -58,6 +58,20 @@ url_safe_base64_decode() {
     local padding=$(( (4 - ${#input} % 4) % 4 ))
     input="${input}$(printf '=%.0s' $(seq 1 $padding))"
     echo "$input" | base64 --decode 2>/dev/null
+}
+
+# Check token base64 encoded
+is_base64() {
+    echo "$1" | grep -Eq '^([A-Za-z0-9+/=]{4})*$'
+}
+
+# Decode base64 encoded
+decode_if_base64() {
+    if is_base64 "$1"; then
+        echo "$1" | base64 --decode
+    else
+        echo "$1"
+    fi
 }
 
 # Main function
@@ -88,7 +102,17 @@ main() {
         exit 1
     fi
 
-    IFS='.' read -r header payload signature <<< "$token"
+    # Check token base64 encoded
+    if is_base64 "$token"; then
+        echo -e "\n${blue}➤ JWT token encoded in Base64. Decoding...${end}"
+        decoded_token=$(decode_if_base64 "$token")
+        sleep 1
+    else
+        echo -e "\n${blue}➤ Regular JWT token${end}"
+        decoded_token="$token"
+    fi
+
+    IFS='.' read -r header payload signature <<< "$decoded_token"
 
     header_decoded=$(url_safe_base64_decode "$header")
     payload_decoded=$(url_safe_base64_decode "$payload")
@@ -104,7 +128,6 @@ main() {
     echo -e "$signature"
     echo -e "${gray}--------------------------------------------------${end}\n"
 }
-
 
 ####################################################
 #################### RUN SCRIPT ####################
