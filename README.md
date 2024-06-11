@@ -2,7 +2,7 @@
 
 ![jwt1](./img/jwt-logo2.png)
 
-Bash script to decode JSON Web Tokens
+Bash script that decodes JWT tokens, in normal format or fully Base64-encoded.
 
 ---
 
