@@ -6,7 +6,7 @@ Bash script that decodes JWT tokens, in normal format or fully Base64-encoded.
 
 ---
 
-## Use
+## Install tool
 
 * Download the repository to your system
 
@@ -39,7 +39,7 @@ jwtDecoder --help
 
 ![jwt2](./img/jwt-help.png)
 
-* Execute tool
+## Use tool
 
 ![jwt3](./img/jwt-token.png)
 
