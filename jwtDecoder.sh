@@ -1,5 +1,4 @@
 #!/bin/bash
-# Author: iTrox
 
 ######################################################
 #################### COLOURS EDIT ####################
@@ -29,28 +28,29 @@ print_banner() {
     echo;
     echo -e " ${yellow}        ___       ________   ____                      __ ${end}"
     echo -e " ${yellow}       / / |     / /_  __/  / __ \\___  _________  ____/ /__  _____ ${end}"
-	echo -e " ${yellow}  __  / /| | /| / / / /    / / / / _ \\/ ___/ __ \\/ __  / _ \\/ ___/ ${end}"
-	echo -e " ${yellow} / /_/ / | |/ |/ / / /    / /_/ /  __/ /__/ /_/ / /_/ /  __/ / ${end}"
-	echo -e " ${yellow} \____/  |__/|__/ /_/    /_____/\\___/\\___/\\____/\\__,_/\\___/_/ ${end}\n\n"
-	echo -e "  ${turquoise}JSON Web Token decoder ${end}"
-	echo -e "  ${turquoise}Version 2.0${end}"
+    echo -e " ${yellow}  __  / /| | /| / / / /    / / / / _ \\/ ___/ __ \\/ __  / _ \\/ ___/ ${end}"
+    echo -e " ${yellow} / /_/ / | |/ |/ / / /    / /_/ /  __/ /__/ /_/ / /_/ /  __/ / ${end}"
+    echo -e " ${yellow} \____/  |__/|__/ /_/    /_____/\\___/\\___/\\____/\\__,_/\\___/_/ ${end}\n\n"
+    echo -e "  ${turquoise}JSON Web Token decoder ${end}"
+    echo -e "  ${turquoise}Version 3.0${end}"
     echo -e "  ${blue}Made by iTrox${end}\n"
-	echo -e "  ${turquoise}jwtDecoder [-h] or [--help] to view help menu${end}\n"
+    echo -e "  ${turquoise}jwtDecoder [-h] or [--help] to view help menu${end}\n"
 }
 
 # Help menu
 help_menu() {
-    echo -e " ${yellow}Usage: $0 -t <token> \n${end}"
-	echo -e " ${yellow}Menu options:${end}"
-    echo -e " 	${turquoise}-t <token>${end}, ${gray}JWT token to decode${end}"
-    echo -e " 	${turquoise}-h${end}, ${gray}Show help menu${end}\n"
+    echo -e " ${yellow}Usage: $0 -t <token> [-d <dictionary>] \n${end}"
+    echo -e " ${yellow}Menu options:${end}"
+    echo -e "    ${turquoise}-t <token>${end}, ${gray}JWT token to decode${end}"
+    echo -e "    ${turquoise}-d <dictionary>${end}, ${gray}Dictionary file for brute force attack${end}"
+    echo -e "    ${turquoise}-h${end}, ${gray}Show help menu${end}\n"
 }
 
 # REDIRECT: HELP MENU
-    if [[ "$1" = "-h" || "$1" = "--help" ]]; then
-        help_menu
-        exit 0
-    fi
+if [[ "$1" = "-h" || "$1" = "--help" ]]; then
+    help_menu
+    exit 0
+fi
 
 # URL-safe base64 decode
 url_safe_base64_decode() {
@@ -74,12 +74,42 @@ decode_if_base64() {
     fi
 }
 
+# Brute force JWT signature
+brute_force_jwt() {
+    local header=$1
+    local payload=$2
+    local signature=$3
+    local dictionary=$4
+
+    if [ ! -f "$dictionary" ]; then
+        echo -e "\n ${red}[!] Error:${end} ${gray}Dictionary file not found${end}\n" 1>&2
+        exit 1
+    fi
+
+    echo -e "\n${blue}➤ Starting brute force attack...${end}"
+
+    while read -r secret; do
+        generated_signature=$(echo -n "$header.$payload" | openssl dgst -sha256 -hmac "$secret" -binary | base64 | tr '+/' '-_' | tr -d '=')
+        if [ "$generated_signature" == "$signature" ]; then
+            echo -e "\n${green}[+] Secret found:${end} ${red}$secret${end}\n"
+            return 0
+        fi
+    done < "$dictionary"
+
+    echo -e "\n${red}[-] Secret not found in dictionary${end}\n"
+}
+
 # Main function
 main() {
-    while getopts ":t:h" opt; do
+    local dictionary=""
+
+    while getopts ":t:d:h" opt; do
         case ${opt} in
             t )
                 token=$OPTARG
+            ;;
+            d )
+                dictionary=$OPTARG
             ;;
             h )
                 help_menu
@@ -102,7 +132,7 @@ main() {
         exit 1
     fi
 
-    # Check token base64 encoded
+    # Decode the token if it is base64 encoded
     if is_base64 "$token"; then
         echo -e "\n${blue}➤ JWT token encoded in Base64. Decoding...${end}"
         decoded_token=$(decode_if_base64 "$token")
@@ -126,7 +156,11 @@ main() {
     echo -e "${gray}--------------------------------------------------${end}"
     echo -e "${yellow}Signature:${end}"
     echo -e "$signature"
-    echo -e "${gray}--------------------------------------------------${end}\n"
+    echo -e "${gray}--------------------------------------------------${end}"
+
+    if [ -n "$dictionary" ]; then
+        brute_force_jwt "$header" "$payload" "$signature" "$dictionary"
+    fi
 }
 
 ####################################################
