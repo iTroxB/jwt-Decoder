@@ -156,7 +156,7 @@ main() {
     echo -e "${gray}--------------------------------------------------${end}"
     echo -e "${yellow}Signature:${end}"
     echo -e "$signature"
-    echo -e "${gray}--------------------------------------------------${end}"
+    echo -e "${gray}--------------------------------------------------${end}\n"
 
     if [ -n "$wordlist" ]; then
         brute_force_jwt "$header" "$payload" "$signature" "$wordlist"
