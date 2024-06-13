@@ -43,6 +43,18 @@ jwtDecoder --help
 
 ## Use tool
 
+- Example of JWT without signature secret
+
+![jwt3](./img/jwt-noSignature.png)
+
+- Example of JWT with secret signature "JSON-WEB-TOKEN"
+
+![jwt3](./img/jwt-Signature.png)
+
+---
+
+---
+
 - Example with regular JWT token
 
 ![jwt3](./img/jwt-token1.png)
