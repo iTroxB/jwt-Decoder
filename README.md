@@ -45,7 +45,9 @@ jwtDecoder --help
 
 - Example of JWT without signature secret
 
-![jwt3](./img/jwt-noSignature.png)
+<div align="center">
+  <img src="/img/jwt-noSignature.png" width=300px>
+</div>
 
 - Example of JWT with secret signature "JSON-WEB-TOKEN"
 
