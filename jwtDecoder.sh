@@ -68,7 +68,7 @@ is_base64() {
 # Decode base64 encoded
 decode_if_base64() {
     if is_base64 "$1"; then
-        echo "$1" | base64 --decode
+        echo "$1" | base64 -d
     else
         echo "$1"
     fi
