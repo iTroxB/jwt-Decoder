@@ -57,7 +57,7 @@ url_safe_base64_decode() {
     local input=$1
     local padding=$(( (4 - ${#input} % 4) % 4 ))
     input="${input}$(printf '=%.0s' $(seq 1 $padding))"
-    echo "$input" | base64 --decode 2>/dev/null
+    echo "$input" | base64 -d 2>/dev/null
 }
 
 # Check token base64 encoded
