@@ -63,7 +63,7 @@ jwtDecoder --help
 
 ---
 
-- Example with regular JWT token
+- Execution on base64-encoded JWT without secret signature
 
 ![jwt3](./img/jwt-token1.png)
 
