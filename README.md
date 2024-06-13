@@ -60,6 +60,7 @@ jwtDecoder --help
 </div>
 
 - Execution on base64-encoded JWT without secret signature
+
   - **Token**: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.5Hm3bNazVbnK--vsGWMJ_tmZCviy7qL4T16XJLBtQq0
   - **Base64-encode**: ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnVZVzFsSWpvaVNtOW9iaUJFYjJVaWZRLjVIbTNiTmF6VmJuSy0tdnNHV01KX3RtWkN2aXk3cUw0VDE2WEpMQnRRcTA=
 
@@ -68,6 +69,7 @@ jwtDecoder --help
 </div>
 
 - Execution on base64-encoded JWT with brute force attack on secret signature "JSON-WEB-TOKEN"
+
   - **Token**: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UifQ.VVrywxLuWdr8seumIsY49n_OL4l_k7xph745wdr9_BM
   - **Base64-encode**: ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnVZVzFsSWpvaVNtOW9iaUJFYjJVaWZRLlZWcnl3eEx1V2RyOHNldW1Jc1k0OW5fT0w0bF9rN3hwaDc0NXdkcjlfQk0=
  
