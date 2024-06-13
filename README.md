@@ -64,7 +64,7 @@ jwtDecoder --help
   - **Base64-encode**: ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnVZVzFsSWpvaVNtOW9iaUJFYjJVaWZRLjVIbTNiTmF6VmJuSy0tdnNHV01KX3RtWkN2aXk3cUw0VDE2WEpMQnRRcTA=
 
 <div align="center">
-  <img src="/img/jwt-token1.png" width=1000px>
+  <img src="/img/jwt-token1.png" width=900px>
 </div>
 
 - Execution on base64-encoded JWT with brute force attack on secret signature "JSON-WEB-TOKEN"
@@ -72,7 +72,7 @@ jwtDecoder --help
   - **Base64-encode**: ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnVZVzFsSWpvaVNtOW9iaUJFYjJVaWZRLlZWcnl3eEx1V2RyOHNldW1Jc1k0OW5fT0w0bF9rN3hwaDc0NXdkcjlfQk0=
  
 <div align="center">
-  <img src="/img/jwt-token2.png" width=1000px>
+  <img src="/img/jwt-token2.png" width=900px>
 </div>
 
 ---
