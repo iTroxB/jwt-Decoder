@@ -39,10 +39,10 @@ print_banner() {
 
 # Help menu
 help_menu() {
-    echo -e " ${yellow}Usage: $0 -t <token> [-d <dictionary>] \n${end}"
+    echo -e " \n${yellow}Usage: $0 -t <token> [-w <wordlist>] \n${end}"
     echo -e " ${yellow}Menu options:${end}"
     echo -e "    ${turquoise}-t <token>${end}, ${gray}JWT token to decode${end}"
-    echo -e "    ${turquoise}-d <dictionary>${end}, ${gray}Dictionary file for brute force attack${end}"
+    echo -e "    ${turquoise}-w <wordlist>${end}, ${gray}Wordlist file for brute force attack${end}"
     echo -e "    ${turquoise}-h${end}, ${gray}Show help menu${end}\n"
 }
 
@@ -79,9 +79,9 @@ brute_force_jwt() {
     local header=$1
     local payload=$2
     local signature=$3
-    local dictionary=$4
+    local wordlist=$4
 
-    if [ ! -f "$dictionary" ]; then
+    if [ ! -f "$wordlist" ]; then
         echo -e "\n ${red}[!] Error:${end} ${gray}Dictionary file not found${end}\n" 1>&2
         exit 1
     fi
@@ -94,22 +94,22 @@ brute_force_jwt() {
             echo -e "\n${green}[+] Secret found:${end} ${red}$secret${end}\n"
             return 0
         fi
-    done < "$dictionary"
+    done < "$wordlist"
 
-    echo -e "\n${red}[-] Secret not found in dictionary${end}\n"
+    echo -e "\n${red}[-] Secret not found in wordlist${end}\n"
 }
 
 # Main function
 main() {
     local dictionary=""
 
-    while getopts ":t:d:h" opt; do
+    while getopts ":t:w:h" opt; do
         case ${opt} in
             t )
                 token=$OPTARG
             ;;
-            d )
-                dictionary=$OPTARG
+            w )
+                wordlist=$OPTARG
             ;;
             h )
                 help_menu
@@ -158,8 +158,8 @@ main() {
     echo -e "$signature"
     echo -e "${gray}--------------------------------------------------${end}"
 
-    if [ -n "$dictionary" ]; then
-        brute_force_jwt "$header" "$payload" "$signature" "$dictionary"
+    if [ -n "$wordlist" ]; then
+        brute_force_jwt "$header" "$payload" "$signature" "$wordlist"
     fi
 }
 
