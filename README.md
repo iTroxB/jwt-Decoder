@@ -1,6 +1,8 @@
 # jwt-Decoder
 
-![jwt1](./img/jwt-logo.png)
+<div align="center">
+  <img src="/img/jwt-logo.png" width=750px>
+</div>
 
 Bash script that decodes JWT tokens, in normal format or fully Base64-encoded.
 
