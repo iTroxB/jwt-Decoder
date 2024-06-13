@@ -39,7 +39,9 @@ jwtDecoder -h
 jwtDecoder --help
 ```
 
-![jwt2](./img/jwt-help.png)
+<div align="center">
+  <img src="/img/jwt-help.png" width=750px>
+</div>
 
 ---
 
