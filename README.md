@@ -76,5 +76,3 @@ jwtDecoder --help
 <div align="center">
   <img src="/img/jwt-token2.png" width=900px>
 </div>
-
----
