@@ -2,5 +2,5 @@
 
 sudo apt update -y
 sudo apt install jq -y
-sudo apt-get install openssl -y
-sudo apt-get install coreutils -y
+sudo apt install openssl -y
+sudo apt install coreutils -y
