@@ -16,15 +16,10 @@ Bash script that decodes JWT tokens, in normal format or fully Base64-encoded.
 sudo git -C /opt clone https://github.com/iTroxB/jwt-Decoder.git
 ```
 
-* Install the requirements by running **requirements-arch.sh** for Arch Linux distros
+* Install the requirements by running **requirements-arch.sh** for Arch Linux or Debian distros
 
 ```shell
 sudo bash /opt/jwt-Decoder/requirements-arch.sh
-```
-
-or **requirements-debian.sh** for Debian distros
-
-```shell
 sudo bash /opt/jwt-Decoder/requirements-debian.sh
 ```
 
