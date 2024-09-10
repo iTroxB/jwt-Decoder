@@ -14,6 +14,7 @@ import (
 )
 
 var wg sync.WaitGroup
+var once sync.Once
 
 func decodeBase64UrlSafe(data string) ([]byte, error) {
     data = strings.ReplaceAll(data, "-", "+")
@@ -36,7 +37,6 @@ func generateSignature(secret, header, payload string) string {
 func bruteForceJWT(header, payload, signature string, wordlist []string, numThreads int) {
     secretChan := make(chan string, len(wordlist))
     resultChan := make(chan string, 1)
-    defer close(secretChan)
 
     go func() {
         for _, secret := range wordlist {
@@ -50,10 +50,9 @@ func bruteForceJWT(header, payload, signature string, wordlist []string, numThre
         for secret := range secretChan {
             genSig := generateSignature(secret, header, payload)
             if genSig == signature {
-                select {
-                case resultChan <- secret:
-                default:
-                }
+                once.Do(func() {
+                    resultChan <- secret
+                })
                 return
             }
         }
