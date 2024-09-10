@@ -82,7 +82,7 @@ jwtDecoder --help
   <img src="/img/jwt-line-bruteforcing.png" width=900px>
 </div>
 
-- Cracking with Go over base64-encoded JWT with secret signature “T3ST1NG_S1GN4TUR3!”
+- Cracking with Go over base64-encoded JWT with secret signature “T3ST1NG_S1GN4TUR3!” in 0.16 seconds
 <div align="center">
   <img src="/img/jwt-cracking.png" width=900px>
 </div>
