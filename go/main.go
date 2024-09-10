@@ -37,12 +37,12 @@ func bruteForceJWT(header, payload, signature string, wordlist []string, numThre
     secretChan := make(chan string, len(wordlist))
     resultChan := make(chan string, 1)
     defer close(secretChan)
-    defer close(resultChan)
 
     go func() {
         for _, secret := range wordlist {
             secretChan <- secret
         }
+        close(secretChan)
     }()
 
     worker := func() {
