@@ -33,7 +33,7 @@ print_banner() {
     echo -e " ${yellow} / /_/ / | |/ |/ / / /    / /_/ /  __/ /__/ /_/ / /_/ /  __/ / ${end}"
     echo -e " ${yellow} \____/  |__/|__/ /_/    /_____/\\___/\\___/\\____/\\__,_/\\___/_/ ${end}\n\n"
     echo -e "  ${turquoise}JSON Web Token decoder ${end}"
-    echo -e "  ${turquoise}Version 3.0${end}"
+    echo -e "  ${turquoise}Version 3.1${end}"
     echo -e "  ${blue}Made by iTrox${end}\n"
     echo -e "  ${turquoise}jwtDecoder [-h] or [--help] to view help menu${end}\n"
 }
@@ -43,7 +43,8 @@ help_menu() {
     echo -e " \n${yellow}Usage: $0 -t <token> [-w <wordlist>] \n${end}"
     echo -e " ${yellow}Menu options:${end}"
     echo -e "    ${turquoise}-t <token>${end}, ${gray}JWT token to decode${end}"
-    echo -e "    ${turquoise}-w <wordlist>${end}, ${gray}Wordlist file for brute force attack${end}"
+    echo -e "    ${turquoise}-w <wordlist>${end}, ${gray}Wordlist file for brute force attack in Signature${end}"
+	echo -e "    ${turquoise}-T <threads>${end}, ${gray}Threads number for brute forcing attack in Signature${end}"
     echo -e "    ${turquoise}-h${end}, ${gray}Show help menu${end}\n"
 }
 
@@ -75,36 +76,29 @@ decode_if_base64() {
     fi
 }
 
-# Brute force JWT signature
-brute_force_jwt() {
+# Brute force JWT signature with Go script
+brute_force_jwt_go() {
     local header=$1
     local payload=$2
     local signature=$3
     local wordlist=$4
+	local threads=$5
 
     if [ ! -f "$wordlist" ]; then
         echo -e "\n ${red}[!] Error:${end} ${gray}Dictionary file not found${end}\n" 1>&2
         exit 1
     fi
 
-    echo -e "\n${blue}➤ Starting brute force attack...${end}"
+    echo -e "\n${blue}➤ Starting brute force attack...\n${end}"
 
-    while read -r secret; do
-        generated_signature=$(echo -n "$header.$payload" | openssl dgst -sha256 -hmac "$secret" -binary | base64 | tr '+/' '-_' | tr -d '=')
-        if [ "$generated_signature" == "$signature" ]; then
-            echo -e "\n${green}[+] Secret found:${end} ${red}$secret${end}\n"
-            return 0
-        fi
-    done < "$wordlist"
-
-    echo -e "\n${red}[-] Secret not found in wordlist${end}\n"
+    jwtBruteForce -t "$header.$payload.$signature" -w "$wordlist" -T "$threads"; echo
 }
 
 # Main function
 main() {
     local dictionary=""
 
-    while getopts ":t:w:h" opt; do
+    while getopts ":t:w:T:h" opt; do
         case ${opt} in
             t )
                 token=$OPTARG
@@ -112,6 +106,9 @@ main() {
             w )
                 wordlist=$OPTARG
             ;;
+			T )
+				threads=$OPTARG
+			;;
             h )
                 help_menu
                 exit 0
@@ -133,7 +130,6 @@ main() {
         exit 1
     fi
 
-    # Decode the token if it is base64 encoded
     if is_base64 "$token"; then
         echo -e "\n${blue}➤ JWT token encoded in Base64. Decoding...${end}"
         decoded_token=$(decode_if_base64 "$token")
@@ -160,7 +156,7 @@ main() {
     echo -e "${gray}--------------------------------------------------${end}\n"
 
     if [ -n "$wordlist" ]; then
-        brute_force_jwt "$header" "$payload" "$signature" "$wordlist"
+        brute_force_jwt_go "$header" "$payload" "$signature" "$wordlist" "$threads"
     fi
 }
 
