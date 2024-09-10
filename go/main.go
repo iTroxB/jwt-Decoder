@@ -50,7 +50,10 @@ func bruteForceJWT(header, payload, signature string, wordlist []string, numThre
         for secret := range secretChan {
             genSig := generateSignature(secret, header, payload)
             if genSig == signature {
-                resultChan <- secret
+                select {
+                case resultChan <- secret:
+                default:
+                }
                 return
             }
         }
